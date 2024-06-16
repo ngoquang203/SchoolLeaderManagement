@@ -15,6 +15,9 @@
         android:theme="@style/Theme.SchoolLeaderManagement"
         tools:targetApi="31">
         <activity
+            android:name=".TuitionReports"
+            android:exported="false" />
+        <activity
             android:name=".DepartmentSituation"
             android:exported="false" />
         <activity

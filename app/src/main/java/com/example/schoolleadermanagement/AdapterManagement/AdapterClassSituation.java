@@ -21,13 +21,15 @@ public class AdapterClassSituation extends BaseAdapter {
     ArrayList<TuitionReport> reportArrayList;
     LayoutInflater layoutInflater;
     String Classes;
+    String Semester;
 
-    public AdapterClassSituation(Context context, ArrayList<Student> arrayList,ArrayList<TuitionReport> reportArrayList,String classes) {
+    public AdapterClassSituation(Context context, ArrayList<Student> arrayList,ArrayList<TuitionReport> reportArrayList,String classes,String semester) {
         this.context = context;
         this.arrayList = arrayList;
         this.reportArrayList = reportArrayList;
         this.layoutInflater = LayoutInflater.from(context);
         this.Classes = classes;
+        this.Semester = semester;
     }
 
     @Override
@@ -58,7 +60,7 @@ public class AdapterClassSituation extends BaseAdapter {
             IdStudent.setText(student.getIdStudent());
             reportArrayList = new ArrayList<>();
             try {
-                reportArrayList = TuitionReport.getuserlist(Classes);
+                reportArrayList = TuitionReport.getuserlist(Classes,Semester);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

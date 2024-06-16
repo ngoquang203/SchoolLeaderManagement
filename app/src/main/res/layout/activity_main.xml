@@ -111,6 +111,16 @@
             android:paddingVertical="@dimen/regular1"
             android:fontFamily="@font/roboto_bold"
             android:visibility="gone"/>
+        <Button
+            android:id="@+id/main_watchTuitionReportSchool"
+            android:layout_marginTop="@dimen/regular2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Xem tình hình nộp học phí của toàn trường"
+            android:textSize="@dimen/regular1"
+            android:paddingVertical="@dimen/regular1"
+            android:fontFamily="@font/roboto_bold"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/main_logOut"

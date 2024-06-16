@@ -36,13 +36,12 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="@dimen/regular1">
-            <TextView
+            <Spinner
+                android:id="@+id/departmentSituation_spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Kì 2, năm học 2024"
-                android:fontFamily="@font/roboto_bold"
-                android:textSize="@dimen/regular1"
-                android:gravity="center"/>
+                android:contentDescription="@string/app_name"
+                android:visibility="visible" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

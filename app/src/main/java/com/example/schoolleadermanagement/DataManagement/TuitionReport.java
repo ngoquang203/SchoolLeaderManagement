@@ -1,5 +1,7 @@
 package com.example.schoolleadermanagement.DataManagement;
 
+import android.util.Log;
+
 import com.example.schoolleadermanagement.SQLServerHelper.SQLServerManagement;
 
 import java.sql.Connection;
@@ -26,13 +28,37 @@ public class TuitionReport {
     }
 
     // hàm in ra danh sách sinh viên đóng trọ vào kì nào năm nào
-    public static ArrayList<TuitionReport> getuserlist(String classes) throws SQLException { // Hàm lấy dữ liệu
+    public static ArrayList<TuitionReport> getuserlist(String classes,String semester) throws SQLException { // Hàm lấy dữ liệu
         Connection connection = SQLServerManagement.connectionSQLSever(); // Kết nối với SQL server
         ArrayList<TuitionReport> list = new ArrayList<>(); // Tạo list để lưu dữ liệu
         Statement statement = connection.createStatement();// Tạo đối tượng Statement.
         String sql = "select Student.IdStudent,Department,Class,Moneys,Semester,Schoolyear\n" +
                 "from Student inner join TuitionReport\n" +
-                "on Student.IdStudent = TuitionReport.IdStudent where CONVERT(varchar,Class) = '" + classes + "'"; // Câu lênh truy vấn SQL Server lấy ra dữ liệu trong bảng
+                "on Student.IdStudent = TuitionReport.IdStudent where CONVERT(varchar,Class) = '" + classes + "' and Semester = " + semester + ""; // Câu lênh truy vấn SQL Server lấy ra dữ liệu trong bảng
+        // Thực thi câu lệnh SQL trả về đối tượng ResultSet. // Mọi kết quả trả về sẽ được lưu trong ResultSet
+        ResultSet rs = statement.executeQuery(sql);
+        Log.e("DATA",sql);
+        while (rs.next()) {
+            list.add(new TuitionReport(
+                    rs.getString(1).trim(), // Lấy dữ liệu
+                    rs.getString(2).trim(),
+                    rs.getString(3),
+                    rs.getLong(4),
+                    rs.getInt(5),
+                    rs.getString(6)));// Đọc dữ liệu từ ResultSet
+        }
+        statement.close(); // Đóng đối tương statement
+        connection.close();// Đóng kết nối
+        return list; // Trả về list
+    }
+
+    public static ArrayList<TuitionReport> getuserlistDepartment(String department, String semester) throws SQLException { // Hàm lấy dữ liệu
+        Connection connection = SQLServerManagement.connectionSQLSever(); // Kết nối với SQL server
+        ArrayList<TuitionReport> list = new ArrayList<>(); // Tạo list để lưu dữ liệu
+        Statement statement = connection.createStatement();// Tạo đối tượng Statement.
+        String sql = "select Student.IdStudent,Department,Class,Moneys,Semester,Schoolyear\n" +
+                "from Student inner join TuitionReport\n" +
+                "on Student.IdStudent = TuitionReport.IdStudent where CONVERT(varchar,Department) = '" + department + "' and Semester = " + semester + ""; // Câu lênh truy vấn SQL Server lấy ra dữ liệu trong bảng
         // Thực thi câu lệnh SQL trả về đối tượng ResultSet. // Mọi kết quả trả về sẽ được lưu trong ResultSet
         ResultSet rs = statement.executeQuery(sql);
         while (rs.next()) {
@@ -49,13 +75,14 @@ public class TuitionReport {
         return list; // Trả về list
     }
 
-    public static ArrayList<TuitionReport> getuserlistDepartment(String department) throws SQLException { // Hàm lấy dữ liệu
+    public static ArrayList<TuitionReport> getuserlistSchool(String semester) throws SQLException { // Hàm lấy dữ liệu
         Connection connection = SQLServerManagement.connectionSQLSever(); // Kết nối với SQL server
         ArrayList<TuitionReport> list = new ArrayList<>(); // Tạo list để lưu dữ liệu
         Statement statement = connection.createStatement();// Tạo đối tượng Statement.
         String sql = "select Student.IdStudent,Department,Class,Moneys,Semester,Schoolyear\n" +
                 "from Student inner join TuitionReport\n" +
-                "on Student.IdStudent = TuitionReport.IdStudent where CONVERT(varchar,Department) = '" + department + "'"; // Câu lênh truy vấn SQL Server lấy ra dữ liệu trong bảng
+                "on Student.IdStudent = TuitionReport.IdStudent where Semester = " + semester + ""; // Câu lênh truy vấn SQL Server lấy ra dữ liệu trong bảng
+        Log.e("DATA",sql);
         // Thực thi câu lệnh SQL trả về đối tượng ResultSet. // Mọi kết quả trả về sẽ được lưu trong ResultSet
         ResultSet rs = statement.executeQuery(sql);
         while (rs.next()) {

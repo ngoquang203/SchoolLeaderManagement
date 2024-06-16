@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     // khơi tạo biến
-    private Button watchTuitionReportClass,watchTuitionReportDepartment,logOut;
+    private Button watchTuitionReportClass,watchTuitionReportDepartment,watchTuitionReportSchool,logOut;
     private SharedPreferences sharedPreferences;
     private String Position,Manager;
     private TextView textPosition,textManager;
@@ -30,13 +30,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void setVisibleClassOrDepartment() {
         if(Position.equals("Giáo viên")){
-            // ẩn chức năng của lãnh đạo khoa
+            // ẩn chức năng của lãnh đạo khoa, lãnh đạo trường
             watchTuitionReportClass.setVisibility(View.VISIBLE);
             watchTuitionReportDepartment.setVisibility(View.GONE);
-        }else{
-            // ẩn chức năng của giáo viên
+            watchTuitionReportSchool.setVisibility(View.GONE);
+        }else if(Position.equals("Lãnh đạo khoa")){
+            // ẩn chức năng của giáo viên, lãnh đạo trường
             watchTuitionReportClass.setVisibility(View.GONE);
             watchTuitionReportDepartment.setVisibility(View.VISIBLE);
+            watchTuitionReportSchool.setVisibility(View.GONE);
+        }else{
+            // ẩn chức năng của giáo viên, lãnh đạo khoa
+            watchTuitionReportClass.setVisibility(View.GONE);
+            watchTuitionReportDepartment.setVisibility(View.GONE);
+            watchTuitionReportSchool.setVisibility(View.VISIBLE);
         }
     }
 
@@ -59,6 +66,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        watchTuitionReportSchool.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, TuitionReports.class); // tạo intent chuyển màn hình
+                startActivity(intent);
+            }
+        });
         logOut.setOnClickListener(new View.OnClickListener() { // chuyển màn hình về đăng nhập
             @Override
             public void onClick(View v) {
@@ -76,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
         watchTuitionReportClass = findViewById(R.id.main_watchTuitionReportClass);
         watchTuitionReportDepartment = findViewById(R.id.main_watchTuitionReportDepartment);
+        watchTuitionReportSchool = findViewById(R.id.main_watchTuitionReportSchool);
         textPosition = findViewById(R.id.main_textPosition);
         textManager = findViewById(R.id.main_textManager);
 

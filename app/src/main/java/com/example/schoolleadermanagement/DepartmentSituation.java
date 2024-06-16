@@ -6,10 +6,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.schoolleadermanagement.AdapterManagement.AdapterClassSituation;
 import com.example.schoolleadermanagement.DataManagement.Student;
 import com.example.schoolleadermanagement.DataManagement.TuitionReport;
 import com.github.mikephil.charting.charts.PieChart;
@@ -34,7 +38,10 @@ public class DepartmentSituation extends AppCompatActivity {
     private TextView class1,class2,class3,class4,class5;
     private TextView percent1,percent2,percent3,percent4,percent5;
     private TextView textNameDepartment;
-    private DecimalFormat df = new DecimalFormat("#.##");;
+    private DecimalFormat df = new DecimalFormat("#.##");
+    private Spinner spinner;
+    private ArrayList<String> stringArrayList;
+    private ArrayAdapter<String> adapter;
 
 
     @Override
@@ -44,7 +51,27 @@ public class DepartmentSituation extends AppCompatActivity {
         Init(); // hàm khởi tạo giá trị
         clickBackPage(); // hàm quay về trang chủ
         setDataPieChart(); // hàm xét giá trị cho Pie chart
-        setDataClass(); // hàm set giá trị phần trăm cho các lớp
+        setDataClass(getSemesterInSpinner(stringArrayList.get(0))); // hàm set giá trị phần trăm cho các lớp
+        clickSpiner(); // hàm thay đổi báo cáo khi chọn spinner
+    }
+    private void clickSpiner() {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    reportArrayList = TuitionReport.getuserlistDepartment(Department,getSemesterInSpinner(stringArrayList.get(position)));
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                setDataClass(getSemesterInSpinner(stringArrayList.get(position)));
+                setDataPieChart();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void setDataPieChart() {
@@ -80,7 +107,7 @@ public class DepartmentSituation extends AppCompatActivity {
     }
 
     // hàm set giá trị cho tên lớp và phần trăm sinh viên lớp đăng kí học
-    private void setDataClass(){
+    private void setDataClass(String semester){
         ArrayList<TuitionReport> list1 = new ArrayList<>();
         ArrayList<TuitionReport> list2 = new ArrayList<>();
         ArrayList<TuitionReport> list3 = new ArrayList<>();
@@ -88,11 +115,11 @@ public class DepartmentSituation extends AppCompatActivity {
         ArrayList<TuitionReport> list5 = new ArrayList<>();
         if (Department.equals("CNTT")){
             try {
-                list1 = TuitionReport.getuserlist("D.10.48.01");
-                list2 = TuitionReport.getuserlist("D.10.48.02");
-                list3 = TuitionReport.getuserlist("D.10.48.03");
-                list4 = TuitionReport.getuserlist("D.10.48.04");
-                list5 = TuitionReport.getuserlist("D.10.48.05");
+                list1 = TuitionReport.getuserlist("D.10.48.01",semester);
+                list2 = TuitionReport.getuserlist("D.10.48.02",semester);
+                list3 = TuitionReport.getuserlist("D.10.48.03",semester);
+                list4 = TuitionReport.getuserlist("D.10.48.04",semester);
+                list5 = TuitionReport.getuserlist("D.10.48.05",semester);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -114,11 +141,11 @@ public class DepartmentSituation extends AppCompatActivity {
             percent5.setText(p5);
         }else if(Department.equals("TCNH")){
             try {
-                list1 = TuitionReport.getuserlist("D.10.38.01");
-                list2 = TuitionReport.getuserlist("D.10.38.02");
-                list3 = TuitionReport.getuserlist("D.10.38.03");
-                list4 = TuitionReport.getuserlist("D.10.38.04");
-                list5 = TuitionReport.getuserlist("D.10.38.05");
+                list1 = TuitionReport.getuserlist("D.10.38.01",semester);
+                list2 = TuitionReport.getuserlist("D.10.38.02",semester);
+                list3 = TuitionReport.getuserlist("D.10.38.03",semester);
+                list4 = TuitionReport.getuserlist("D.10.38.04",semester);
+                list5 = TuitionReport.getuserlist("D.10.38.05",semester);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -139,11 +166,11 @@ public class DepartmentSituation extends AppCompatActivity {
             percent5.setText(p5);
         }else if(Department.equals("QTKD")){
             try {
-                list1 = TuitionReport.getuserlist("D.10.28.01");
-                list2 = TuitionReport.getuserlist("D.10.28.02");
-                list3 = TuitionReport.getuserlist("D.10.28.03");
-                list4 = TuitionReport.getuserlist("D.10.28.04");
-                list5 = TuitionReport.getuserlist("D.10.28.05");
+                list1 = TuitionReport.getuserlist("D.10.28.01",semester);
+                list2 = TuitionReport.getuserlist("D.10.28.02",semester);
+                list3 = TuitionReport.getuserlist("D.10.28.03",semester);
+                list4 = TuitionReport.getuserlist("D.10.28.04",semester);
+                list5 = TuitionReport.getuserlist("D.10.28.05",semester);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -165,7 +192,11 @@ public class DepartmentSituation extends AppCompatActivity {
 
         }
     }
-
+    // hàm lấy ra kì học
+    private String getSemesterInSpinner(String str){
+        String semester = String.valueOf(str.charAt(3));
+        return semester;
+    }
     private void Init() {
         // ánh xạ View
         sharedPreferences = getSharedPreferences("loginData",MODE_PRIVATE);
@@ -187,13 +218,19 @@ public class DepartmentSituation extends AppCompatActivity {
 
         textNameDepartment = findViewById(R.id.departmentSituation_textNameDepartment);
         textNameDepartment.setText(Department); // set giá trị để hiển thi tên khoa
-
+        stringArrayList = new ArrayList<>();
+        stringArrayList.add("Kì 1");
+        stringArrayList.add("Kì 2");
         try {
-            reportArrayList = TuitionReport.getuserlistDepartment(Department); // lấy dữ liệu từ sql server
+            reportArrayList = TuitionReport.getuserlistDepartment(Department,getSemesterInSpinner(stringArrayList.get(0))); // lấy dữ liệu từ sql server
             studentArrayList = Student.getuserlistDepartment(Department);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        spinner = findViewById(R.id.departmentSituation_spinner);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,stringArrayList);
+        spinner.setAdapter(adapter);
     }
 
 }

@@ -32,6 +32,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+        <Spinner
+            android:id="@+id/classSituation_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/app_name"
+            android:visibility="visible" />
         <ListView
             android:id="@+id/classSituation_listview"
             android:layout_width="match_parent"

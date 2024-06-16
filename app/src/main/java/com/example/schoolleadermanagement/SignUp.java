@@ -104,6 +104,7 @@ public class SignUp extends AppCompatActivity {
         arrayListPosition = new ArrayList<>();
         arrayListPosition.add("Giáo viên");
         arrayListPosition.add("Lãnh đạo khoa");
+        arrayListPosition.add("Lãnh đạo trường");
     }
 
     private void setArrayListManagerTecher(){
@@ -146,11 +147,15 @@ public class SignUp extends AppCompatActivity {
                     setArrayListManagerTecher();
                     adapterManager = new ArrayAdapter<>(parent.getContext(), android.R.layout.simple_spinner_dropdown_item,arrayListManagement);
                     spinnerManager.setAdapter(adapterManager);
-                }else{
+                    spinnerManager.setVisibility(View.VISIBLE);
+                }else if(arrayListPosition.get(position).equals("Lãnh đạo khoa")){
                     // chọn chức vụ lãnh đạo khoa sẽ quản lí các lớp
                     setArrayListManagerDepartment();
                     adapterManager = new ArrayAdapter<>(parent.getContext(), android.R.layout.simple_spinner_dropdown_item,arrayListManagement);
                     spinnerManager.setAdapter(adapterManager);
+                    spinnerManager.setVisibility(View.VISIBLE);
+                }else{
+                    spinnerManager.setVisibility(View.GONE);
                 }
             }
 
